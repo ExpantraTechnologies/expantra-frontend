@@ -1,5 +1,5 @@
 import { Webhook } from "svix";
-import { supabase } from "@/supabase/client";
+import { supabase } from "@/lib/supabaseClient";
 import { NextRequest } from "next/server";
 
 export const config = {
