@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { userId } = auth();

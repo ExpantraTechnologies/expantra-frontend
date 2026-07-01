@@ -1,4 +1,4 @@
-import { LastSyncStatus } from "@/app/components/LastSyncStatus";
+import { LastSyncStatus } from "@/components/LastSyncStatus";
 
 export default function HomePage() {
   return (

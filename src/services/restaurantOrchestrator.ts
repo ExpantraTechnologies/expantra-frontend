@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '../lib/supabaseAdmin';
-import { PosRouter } from './pos/posRouter';
+import { PosRouter } from '../../services/pos/posRouter';
 import { RestaurantIntentPayload } from '../types/restaurantIntents';
 import { sendRestaurantNotification } from './notifications/restaurantNotifications';
 

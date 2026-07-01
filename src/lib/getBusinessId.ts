@@ -1,5 +1,5 @@
-import { auth } from "@clerk/nextjs";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { auth } from "@clerk/nextjs/server";
+import { supabase } from "@/lib/supabaseClient";
 
 export async function getBusinessId() {
   const { userId } = auth();

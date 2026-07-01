@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 const PROVIDERS = [
   { value: "vagaro", label: "Vagaro" },
