@@ -1,4 +1,4 @@
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 //
 // Save one turn of conversation (customer or assistant)
@@ -11,7 +11,7 @@ export async function saveConversationTurn(
 ) {
   if (!businessId || !customerPhone || !role || !message) return;
 
-  await supabaseClient.from("conversation_history").insert({
+  await supabase.from("conversation_history").insert({
     business_id: businessId,
     customer_phone: customerPhone,
     role,
@@ -28,7 +28,7 @@ export async function getConversationHistory(
 ) {
   if (!businessId || !customerPhone) return [];
 
-  const { data, error } = await supabaseClient
+  const { data, error } = await supabase
     .from("conversation_history")
     .select("*")
     .eq("business_id", businessId)
@@ -45,11 +45,19 @@ export async function getConversationHistory(
 
 //
 // Save or update a customer preference
-// Examples:
-// - preferred_stylist = "Sarah"
-// - preferred_time = "mornings"
-// - notes = "likes quiet environment"
 //
 export async function saveCustomerPreference(
   customerId: string,
-  key
+  key: string,
+  value: string
+) {
+  if (!customerId || !key) return;
+
+  await supabase
+    .from("customer_preferences")
+    .upsert({
+      customer_id: customerId,
+      key,
+      value,
+    });
+}

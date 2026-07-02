@@ -138,4 +138,47 @@ export function AddAppointmentSheet({
             >
               <option value="">Select customer</option>
               {customers.map((c) => (
-                <option key={c.id} value={c.id}></option>
+                <option key={c.id} value={c.id}>
+                  {c.name || c.phone || "Customer"}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Starts At */}
+          <div className="space-y-2">
+            <Label>Starts At</Label>
+            <Input
+              type="datetime-local"
+              value={startsAt}
+              onChange={(e) => setStartsAt(e.target.value)}
+            />
+          </div>
+
+          {/* Ends At */}
+          <div className="space-y-2">
+            <Label>Ends At</Label>
+            <Input
+              type="datetime-local"
+              value={endsAt}
+              onChange={(e) => setEndsAt(e.target.value)}
+            />
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-2">
+            <Label>Notes</Label>
+            <Textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </div>
+
+          <Button className="w-full" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Saving..." : "Save Appointment"}
+          </Button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
