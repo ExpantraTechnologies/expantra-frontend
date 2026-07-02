@@ -2,11 +2,10 @@ import { Webhook } from "svix";
 import { supabase } from "@/lib/supabaseClient";
 import { NextRequest } from "next/server";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const preferredRegion = "iad1";
+export const bodyParser = false;
 
 export async function POST(req: NextRequest) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
