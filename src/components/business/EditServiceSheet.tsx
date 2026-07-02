@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -65,14 +65,10 @@ export function EditServiceSheet({
       updated_at: new Date().toISOString(),
     };
 
-    // Optimistic update
     optimisticEdit(updated);
-
-    // Close immediately
     setOpen(false);
 
-    // Send to Supabase
-    await supabaseClient
+    await supabase
       .from("services")
       .update({
         name,
@@ -93,7 +89,9 @@ export function EditServiceSheet({
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Edit Service</SheetTitle>
-          <SheetDescription>Update the details of this service.</SheetDescription>
+          <SheetDescription>
+            Update the details of this service.
+          </SheetDescription>
         </SheetHeader>
 
         <div className="mt-6 space-y-6">

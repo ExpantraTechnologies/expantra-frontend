@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CustomerSkeleton } from "./CustomerSkeleton";
@@ -29,7 +29,7 @@ export function BusinessCustomers({ businessId }: { businessId: string }) {
     setLoading(true);
     setError(null);
 
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabase
       .from("customers")
       .select("*")
       .eq("business_id", businessId)

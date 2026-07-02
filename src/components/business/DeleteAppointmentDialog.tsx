@@ -1,6 +1,6 @@
 "use client";
 
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,7 +41,7 @@ export function DeleteAppointmentDialog({
     setOpen(false);
 
     // Persist deletion
-    await supabaseClient
+    await supabase
       .from("appointments")
       .delete()
       .eq("id", appointment.id);

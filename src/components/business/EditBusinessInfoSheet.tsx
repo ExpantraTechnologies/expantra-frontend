@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -48,7 +48,6 @@ export function EditBusinessInfoSheet({
 
   const [loading, setLoading] = useState(false);
 
-  // Pre-fill when settings load
   useEffect(() => {
     if (settings) {
       setName(settings.name);
@@ -73,7 +72,7 @@ export function EditBusinessInfoSheet({
 
     setLoading(true);
 
-    await supabaseClient
+    await supabase
       .from("business_settings")
       .update({
         name,

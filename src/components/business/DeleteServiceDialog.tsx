@@ -1,6 +1,6 @@
 "use client";
 
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,7 +41,10 @@ export function DeleteServiceDialog({
     setOpen(false);
 
     // Send to Supabase
-    await supabaseClient.from("services").delete().eq("id", service.id);
+    await supabase
+      .from("services")
+      .delete()
+      .eq("id", service.id);
 
     onComplete();
     setLoading(false);

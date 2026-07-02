@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,7 @@ export function BusinessClosures({ businessId }: { businessId: string }) {
   async function fetchClosures() {
     setLoading(true);
 
-    const { data } = await supabaseClient
+    const { data } = await supabase
       .from("business_closures")
       .select("*")
       .eq("business_id", businessId)
@@ -58,7 +58,7 @@ export function BusinessClosures({ businessId }: { businessId: string }) {
       close_time: isFullDay ? null : closeTime,
     };
 
-    await supabaseClient.from("business_closures").insert(payload);
+    await supabase.from("business_closures").insert(payload);
 
     // Reset form
     setDate("");
@@ -71,7 +71,7 @@ export function BusinessClosures({ businessId }: { businessId: string }) {
   }
 
   async function deleteClosure(id: string) {
-    await supabaseClient.from("business_closures").delete().eq("id", id);
+    await supabase.from("business_closures").delete().eq("id", id);
     fetchClosures();
   }
 

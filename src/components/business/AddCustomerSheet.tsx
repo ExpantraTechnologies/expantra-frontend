@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -56,7 +56,7 @@ export function AddCustomerSheet({
     setOpen(false);
 
     // Persist to Supabase
-    await supabaseClient.from("customers").insert({
+    await supabase.from("customers").insert({
       business_id: businessId,
       name: name || null,
       phone: phone || null,
@@ -79,7 +79,6 @@ export function AddCustomerSheet({
         </SheetHeader>
 
         <div className="mt-6 space-y-6">
-
           {/* Name */}
           <div className="space-y-2">
             <Label>Name</Label>

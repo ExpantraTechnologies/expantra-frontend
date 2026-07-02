@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BusinessSettingsSkeleton } from "./BusinessSettingsSkeleton";
@@ -20,7 +20,7 @@ export function BusinessSettingsPage({ businessId }: { businessId: string }) {
   async function fetchSettings() {
     setLoading(true);
 
-    const { data } = await supabaseClient
+    const { data } = await supabase
       .from("business_settings")
       .select("*")
       .eq("business_id", businessId)

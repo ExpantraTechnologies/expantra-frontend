@@ -35,7 +35,9 @@ export default function EditBusinessModal({ open, onClose, business, businessId 
 
         {Object.entries(form).map(([key, value]) => (
           <div key={key} className="flex flex-col">
-            <label className="text-sm font-medium capitalize">{key.replace(/_/g, " ")}</label>
+            <label className="text-sm font-medium capitalize">
+              {key.replace(/_/g, " ")}
+            </label>
             <input
               className="border p-2 rounded"
               value={value || ""}

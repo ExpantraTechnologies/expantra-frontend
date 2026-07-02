@@ -1,4 +1,10 @@
-export default function BusinessOverview({ business, onEdit }) {
+export default function BusinessOverview({
+  business,
+  onEdit,
+}: {
+  business: any;
+  onEdit: () => void;
+}) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border">
       <div className="flex items-center justify-between">

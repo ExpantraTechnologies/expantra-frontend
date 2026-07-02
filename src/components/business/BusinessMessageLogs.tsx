@@ -1,3 +1,3 @@
-export default function BusinessServices({ businessId }) {
-  return <p>Services section for business {businessId}</p>;
+export default function BusinessMessageLogs({ businessId }: { businessId: string }) {
+  return <p>Message logs section for business {businessId}</p>;
 }

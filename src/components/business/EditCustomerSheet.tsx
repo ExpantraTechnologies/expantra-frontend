@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -37,7 +37,6 @@ export function EditCustomerSheet({
 
   const [loading, setLoading] = useState(false);
 
-  // Pre-fill when customer changes
   useEffect(() => {
     if (customer) {
       setName(customer.name || "");
@@ -61,14 +60,10 @@ export function EditCustomerSheet({
       updated_at: new Date().toISOString(),
     };
 
-    // Optimistic update
     optimisticEdit(updated);
-
-    // Close immediately
     setOpen(false);
 
-    // Persist to Supabase
-    await supabaseClient
+    await supabase
       .from("customers")
       .update({
         name: updated.name,
@@ -94,7 +89,6 @@ export function EditCustomerSheet({
 
         <div className="mt-6 space-y-6">
 
-          {/* Name */}
           <div className="space-y-2">
             <Label>Name</Label>
             <Input
@@ -104,7 +98,6 @@ export function EditCustomerSheet({
             />
           </div>
 
-          {/* Phone */}
           <div className="space-y-2">
             <Label>Phone</Label>
             <Input
@@ -114,7 +107,6 @@ export function EditCustomerSheet({
             />
           </div>
 
-          {/* Email */}
           <div className="space-y-2">
             <Label>Email</Label>
             <Input
@@ -125,7 +117,6 @@ export function EditCustomerSheet({
             />
           </div>
 
-          {/* Notes */}
           <div className="space-y-2">
             <Label>Notes</Label>
             <Textarea

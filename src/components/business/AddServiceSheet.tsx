@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -66,7 +66,7 @@ export function AddServiceSheet({
     setOpen(false);
 
     // Send to Supabase
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabase
       .from("services")
       .insert({
         business_id: businessId,

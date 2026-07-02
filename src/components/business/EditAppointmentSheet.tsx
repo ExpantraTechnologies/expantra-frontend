@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -62,7 +62,7 @@ export function EditAppointmentSheet({
   }, [appointment]);
 
   async function loadServices() {
-    const { data } = await supabaseClient
+    const { data } = await supabase
       .from("services")
       .select("*")
       .eq("business_id", businessId);
@@ -71,7 +71,7 @@ export function EditAppointmentSheet({
   }
 
   async function loadCustomers() {
-    const { data } = await supabaseClient
+    const { data } = await supabase
       .from("customers")
       .select("*")
       .eq("business_id", businessId);
@@ -101,7 +101,7 @@ export function EditAppointmentSheet({
     setOpen(false);
 
     // Persist to Supabase
-    await supabaseClient
+    await supabase
       .from("appointments")
       .update({
         service_id: updated.service_id,

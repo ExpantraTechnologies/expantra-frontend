@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   Sheet,
   SheetContent,
@@ -48,7 +48,7 @@ export function AddAppointmentSheet({
   }, [open]);
 
   async function loadServices() {
-    const { data } = await supabaseClient
+    const { data } = await supabase
       .from("services")
       .select("*")
       .eq("business_id", businessId);
@@ -57,7 +57,7 @@ export function AddAppointmentSheet({
   }
 
   async function loadCustomers() {
-    const { data } = await supabaseClient
+    const { data } = await supabase
       .from("customers")
       .select("*")
       .eq("business_id", businessId);
@@ -85,18 +85,16 @@ export function AddAppointmentSheet({
     optimisticAdd(temp);
     setOpen(false);
 
-    await supabaseClient
-      .from("appointments")
-      .insert({
-        business_id: businessId,
-        customer_id: customerId || null,
-        service_id: serviceId || null,
-        starts_at: startsAt,
-        ends_at: endsAt,
-        status: "scheduled",
-        notes: notes || null,
-        source: "manual",
-      });
+    await supabase.from("appointments").insert({
+      business_id: businessId,
+      customer_id: customerId || null,
+      service_id: serviceId || null,
+      starts_at: startsAt,
+      ends_at: endsAt,
+      status: "scheduled",
+      notes: notes || null,
+      source: "manual",
+    });
 
     onComplete();
     setLoading(false);
@@ -113,7 +111,6 @@ export function AddAppointmentSheet({
         </SheetHeader>
 
         <div className="mt-6 space-y-6">
-
           {/* Service */}
           <div className="space-y-2">
             <Label>Service</Label>
@@ -141,47 +138,4 @@ export function AddAppointmentSheet({
             >
               <option value="">Select customer</option>
               {customers.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name || c.phone || "Unnamed"}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Start */}
-          <div className="space-y-2">
-            <Label>Starts At</Label>
-            <Input
-              type="datetime-local"
-              value={startsAt}
-              onChange={(e) => setStartsAt(e.target.value)}
-            />
-          </div>
-
-          {/* End */}
-          <div className="space-y-2">
-            <Label>Ends At</Label>
-            <Input
-              type="datetime-local"
-              value={endsAt}
-              onChange={(e) => setEndsAt(e.target.value)}
-            />
-          </div>
-
-          {/* Notes */}
-          <div className="space-y-2">
-            <Label>Notes</Label>
-            <Textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </div>
-
-          <Button className="w-full" onClick={handleSubmit} disabled={loading}>
-            {loading ? "Saving…" : "Create Appointment"}
-          </Button>
-        </div>
-      </SheetContent>
-    </Sheet>
-  );
-}
+                <option key={c.id} value={c.id}></option>
