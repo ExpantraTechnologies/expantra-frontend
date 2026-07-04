@@ -1,4 +1,4 @@
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { getExternalAppointments } from "./externalCalendar";
 
 interface BookingRequest {
@@ -14,7 +14,7 @@ export async function checkAvailability({
   requestedStart,
 }: BookingRequest) {
   // Load service
-  const { data: service } = await supabaseClient
+  const { data: service } = await supabase
     .from("services")
     .select("*")
     .eq("id", serviceId)
@@ -30,7 +30,7 @@ export async function checkAvailability({
   );
 
   // Load business settings
-  const { data: settings } = await supabaseClient
+  const { data: settings } = await supabase
     .from("business_settings")
     .select("*")
     .eq("business_id", businessId)
@@ -59,13 +59,13 @@ export async function checkAvailability({
   }
 
   // Load business hours
-  const { data: hours } = await supabaseClient
+  const { data: hours } = await supabase
     .from("business_hours")
     .select("*")
     .eq("business_id", businessId);
 
   const day = requestedStartDate.getDay();
-  const todaysHours = hours.find((h: any) => h.day_of_week === day);
+  const todaysHours = (hours ?? []).find((h: any) => h.day_of_week === day);
 
   if (!todaysHours || todaysHours.is_closed) {
     return { available: false, reason: "Business is closed that day" };
@@ -85,13 +85,13 @@ export async function checkAvailability({
   }
 
   // Check closures
-  const { data: closures } = await supabaseClient
+  const { data: closures } = await supabase
     .from("business_closures")
     .select("*")
     .eq("business_id", businessId);
 
   const dateStr = requestedStartDate.toISOString().split("T")[0];
-  const closure = closures.find((c: any) => c.date === dateStr);
+  const closure = (closures ?? []).find((c: any) => c.date === dateStr);
 
   if (closure) {
     if (closure.is_full_day) {
@@ -107,12 +107,12 @@ export async function checkAvailability({
   }
 
   // Load internal appointments
-  const { data: internalAppointments } = await supabaseClient
+  const { data: internalAppointments } = await supabase
     .from("appointments")
     .select("*")
     .eq("business_id", businessId);
 
-  // Load external CRM appointments (Vagaro, GlossGenius, Square, etc.)
+  // Load external CRM appointments
   const externalAppointments = await getExternalAppointments(businessId);
 
   // Merge internal + external
@@ -139,7 +139,10 @@ export async function checkAvailability({
       requestedStartDate < apptEndBuffered &&
       requestedEndDate > apptStartBuffered
     ) {
-      return { available: false, reason: "Time conflict with another appointment" };
+      return {
+        available: false,
+        reason: "Time conflict with another appointment",
+      };
     }
   }
 
@@ -152,7 +155,7 @@ export async function createAppointment({
   customerId,
   requestedStart,
 }: BookingRequest) {
-  const { data: service } = await supabaseClient
+  const { data: service } = await supabase
     .from("services")
     .select("*")
     .eq("id", serviceId)
@@ -163,7 +166,7 @@ export async function createAppointment({
   const start = new Date(requestedStart);
   const end = new Date(start.getTime() + duration * 60000);
 
-  const { data, error } = await supabaseClient
+  const { data, error } = await supabase
     .from("appointments")
     .insert({
       business_id: businessId,

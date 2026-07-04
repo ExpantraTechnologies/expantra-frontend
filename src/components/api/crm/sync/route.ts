@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { getExternalAppointments } from "@/lib/ai/externalCalendar";
 
 export async function POST(req: Request) {
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     }
 
     // Load CRM connection
-    const { data: crm } = await supabaseClient
+    const { data: crm } = await supabase
       .from("crm_connections")
       .select("*")
       .eq("business_id", businessId)
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const externalAppointments = await getExternalAppointments(businessId);
 
     // Clear old external appointments
-    await supabaseClient
+    await supabase
       .from("external_appointments")
       .delete()
       .eq("business_id", businessId);
@@ -49,11 +49,11 @@ export async function POST(req: Request) {
         source: a.source,
       }));
 
-      await supabaseClient.from("external_appointments").insert(formatted);
+      await supabase.from("external_appointments").insert(formatted);
     }
 
-    // ⭐ NEW: Log successful sync
-    await supabaseClient.from("crm_sync_logs").insert({
+    // Log successful sync
+    await supabase.from("crm_sync_logs").insert({
       business_id: businessId,
       provider: crm.crm_provider,
       synced_count: externalAppointments.length,
@@ -68,13 +68,13 @@ export async function POST(req: Request) {
       appointments: externalAppointments,
     });
   } catch (err: any) {
-    // ⭐ NEW: Best-effort failure logging
+    // Failure logging
     try {
       const body = await req.json().catch(() => null);
       const businessId = body?.businessId;
 
       if (businessId) {
-        await supabaseClient.from("crm_sync_logs").insert({
+        await supabase.from("crm_sync_logs").insert({
           business_id: businessId,
           provider: "unknown",
           synced_count: 0,

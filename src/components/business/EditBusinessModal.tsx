@@ -3,7 +3,19 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function EditBusinessModal({ open, onClose, business, businessId }) {
+interface EditBusinessModalProps {
+  open: boolean;
+  onClose: () => void;
+  business: any;        // you can refine this later if you want
+  businessId: string;
+}
+
+export default function EditBusinessModal({
+  open,
+  onClose,
+  business,
+  businessId,
+}: EditBusinessModalProps) {
   const [form, setForm] = useState({
     name: business.name,
     phone_number: business.phone_number,
@@ -17,7 +29,7 @@ export default function EditBusinessModal({ open, onClose, business, businessId 
     stripe_price_id: business.stripe_price_id,
   });
 
-  const updateField = (key, value) =>
+  const updateField = (key: string, value: any) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
   const save = async () => {

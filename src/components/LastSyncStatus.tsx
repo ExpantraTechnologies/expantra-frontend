@@ -28,7 +28,7 @@ export function LastSyncStatus() {
 
     async function load() {
       const res = await fetch(
-        `/api/crm/last-sync?businessId=${encodeURIComponent(businessId)}`
+        `/api/crm/last-sync?businessId=${encodeURIComponent(businessId ?? "")}`
       );
       const json = await res.json();
 

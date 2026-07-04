@@ -1,7 +1,7 @@
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 export async function getCustomerAppointments(businessId: string, customerId: string) {
-  const { data } = await supabaseClient
+  const { data } = await supabase
     .from("appointments")
     .select("*")
     .eq("business_id", businessId)
@@ -11,11 +11,15 @@ export async function getCustomerAppointments(businessId: string, customerId: st
   return data || [];
 }
 
-export async function updateAppointmentTime(appointmentId: string, newStartISO: string, durationMinutes: number) {
+export async function updateAppointmentTime(
+  appointmentId: string,
+  newStartISO: string,
+  durationMinutes: number
+) {
   const newStart = new Date(newStartISO);
   const newEnd = new Date(newStart.getTime() + durationMinutes * 60000);
 
-  const { data, error } = await supabaseClient
+  const { data, error } = await supabase
     .from("appointments")
     .update({
       start_time: newStart.toISOString(),
@@ -29,7 +33,7 @@ export async function updateAppointmentTime(appointmentId: string, newStartISO: 
 }
 
 export async function cancelAppointment(appointmentId: string) {
-  const { error } = await supabaseClient
+  const { error } = await supabase
     .from("appointments")
     .delete()
     .eq("id", appointmentId);

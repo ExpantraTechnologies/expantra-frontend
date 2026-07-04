@@ -1,4 +1,4 @@
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { generateAIResponse } from "./response";
 import { getBusinessContext } from "./state";
 import { detectIntent } from "./intent";
@@ -68,14 +68,14 @@ export async function runAIReceptionist({
     }
 
     // Match service name → service ID
-    const service = context.services.find(
+    const service = (context.services ?? []).find(
       (s: any) =>
-        s.name.toLowerCase().includes(intent.serviceName.toLowerCase()) ||
-        intent.serviceName.toLowerCase().includes(s.name.toLowerCase())
+        s.name.toLowerCase().includes((intent.serviceName ?? "").toLowerCase()) ||
+        (intent.serviceName ?? "").toLowerCase().includes(s.name.toLowerCase())
     );
 
     if (!service) {
-      const reply = `I can help with that! But I couldn’t find a service called "${intent.serviceName}". Here are the services we offer:\n${context.services
+      const reply = `I can help with that! But I couldn’t find a service called "${intent.serviceName}". Here are the services we offer:\n${(context.services ?? [])
         .map((s: any) => `• ${s.name}`)
         .join("\n")}`;
 
@@ -183,7 +183,7 @@ export async function runAIReceptionist({
     }
 
     const appt = appts[0];
-    const service = context.services.find((s: any) => s.id === appt.service_id);
+    const service = (context.services ?? []).find((s: any) => s.id === appt.service_id);
 
     const availability = await checkAvailability({
       businessId,
@@ -254,7 +254,7 @@ export async function runAIReceptionist({
     }
 
     const appt = appts[0];
-    const service = context.services.find((s: any) => s.id === appt.service_id);
+    const service = (context.services ?? []).find((s: any) => s.id === appt.service_id);
 
     const result = await cancelAppointment(appt.id);
 
@@ -281,7 +281,7 @@ export async function runAIReceptionist({
   // 6. HOURS
   // ============================================================
   if (intent.intent === "ask_hours") {
-    const reply = `Here are our hours:\n${context.hours
+    const reply = `Here are our hours:\n${(context.hours ?? [])
       .map(
         (h: any) =>
           `${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][h.day_of_week]}: ${
@@ -301,7 +301,7 @@ export async function runAIReceptionist({
   // 7. SERVICES
   // ============================================================
   if (intent.intent === "ask_services") {
-    const reply = `Here are our services:\n${context.services
+    const reply = `Here are our services:\n${(context.services ?? [])
       .map((s: any) => `• ${s.name} (${s.duration_minutes} min)`)
       .join("\n")}`;
 
@@ -335,7 +335,7 @@ export async function runAIReceptionist({
   });
 
   if (customerPhone) {
-    await saveConversationTurn(businessId, customerPhone, "assistant", reply);
+    await saveConversationTurn(businessId, customerPhone, "assistant", reply ?? "");
   }
 
   return reply;

@@ -46,8 +46,8 @@ export async function GET(req: NextRequest) {
 
   const status = {
     profile: Boolean(business?.name && business?.industry),
-    hours: hours?.length > 0,
-    services: services?.length > 0,
+    hours: (hours?.length ?? 0) > 0,
+    services: (services?.length ?? 0) > 0,
     scripts: Boolean(scripts?.greeting && scripts?.closing),
     knowledge: Boolean(knowledge?.content),
   };

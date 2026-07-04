@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 </button>
 
                 {/* Clerk User Button */}
-                <UserButton afterSignOutUrl="/sign-in" />
+                <UserButton />
               </div>
             </header>
 

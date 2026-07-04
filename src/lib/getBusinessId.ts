@@ -2,11 +2,13 @@ import { auth } from "@clerk/nextjs/server";
 import { supabase } from "@/lib/supabaseClient";
 
 export async function getBusinessId() {
-  const { userId } = auth();
+  // auth() now returns a Promise
+  const session = await auth();
+  const userId = session?.userId;
 
   if (!userId) return null;
 
-  const { data, error } = await supabaseClient
+  const { data, error } = await supabase
     .from("user_businesses")
     .select("business_id")
     .eq("user_id", userId)

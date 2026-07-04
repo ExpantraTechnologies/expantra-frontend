@@ -1,11 +1,20 @@
+// src/app/dashboard/layout.tsx
 import { ReactNode } from "react";
 import { auth } from "@clerk/nextjs/server";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const { userId } = auth();
+export default async function DashboardLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  // FIX: auth() must be awaited
+  const session = await auth();
+  const userId = session?.userId;
 
-  // If not logged in, Clerk will automatically redirect to /sign-in
-  if (!userId) return null;
-
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* You can add dashboard-specific layout elements here */}
+      {children}
+    </div>
+  );
 }

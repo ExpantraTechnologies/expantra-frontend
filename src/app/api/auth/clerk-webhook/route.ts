@@ -21,13 +21,13 @@ export async function POST(req: NextRequest) {
   // Verify signature
   const wh = new Webhook(WEBHOOK_SECRET);
 
-  let evt;
+  let evt: { type: string; data: any };
   try {
     evt = wh.verify(rawBody, {
       "svix-id": req.headers.get("svix-id")!,
       "svix-timestamp": req.headers.get("svix-timestamp")!,
       "svix-signature": req.headers.get("svix-signature")!,
-    });
+    }) as { type: string; data: any };
   } catch (err) {
     console.error("Webhook verification failed:", err);
     return new Response(JSON.stringify({ error: "Invalid signature" }), {

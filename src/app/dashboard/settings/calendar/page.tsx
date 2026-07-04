@@ -22,7 +22,7 @@ export default function CalendarSettingsPage() {
   const [lastSyncInfo, setLastSyncInfo] = useState<string | null>(null);
 
   const [provider, setProvider] = useState("");
-  the [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState("");
   const [locationId, setLocationId] = useState("");
   const [calendarId, setCalendarId] = useState("");
   const [username, setUsername] = useState("");
@@ -43,7 +43,7 @@ export default function CalendarSettingsPage() {
     if (!businessId) return;
 
     async function load() {
-      const { data } = await supabaseClient
+      const { data } = await supabase
         .from("crm_connections")
         .select("*")
         .eq("business_id", businessId)
@@ -68,7 +68,7 @@ export default function CalendarSettingsPage() {
     setLoadingSave(true);
     setMessage("");
 
-    const { error } = await supabaseClient.rpc("save_crm_connection", {
+    const { error } = await supabase.rpc("save_crm_connection", {
       p_business_id: businessId,
       p_crm_provider: provider,
       p_crm_api_key: apiKey,
@@ -158,7 +158,7 @@ export default function CalendarSettingsPage() {
             />
           </div>
 
-          {/* Location ID (Square, Vagaro, Fresha, Boulevard) */}
+          {/* Location ID */}
           {["square", "vagaro", "fresha", "boulevard"].includes(provider) && (
             <div>
               <label className="block font-medium mb-1">Location ID</label>
@@ -170,7 +170,7 @@ export default function CalendarSettingsPage() {
             </div>
           )}
 
-          {/* Calendar ID (Calendly, Acuity) */}
+          {/* Calendar ID */}
           {["calendly", "acuity"].includes(provider) && (
             <div>
               <label className="block font-medium mb-1">Calendar ID</label>
@@ -182,7 +182,7 @@ export default function CalendarSettingsPage() {
             </div>
           )}
 
-          {/* Username + Password (Acuity, Boulevard) */}
+          {/* Username + Password */}
           {["acuity", "boulevard"].includes(provider) && (
             <>
               <div>

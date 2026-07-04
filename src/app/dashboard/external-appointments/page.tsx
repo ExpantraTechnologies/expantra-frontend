@@ -23,7 +23,7 @@ export default function ExternalAppointmentsPage() {
     if (!businessId) return;
 
     async function load() {
-      const { data, error } = await supabaseClient
+      const { data, error } = await supabase
         .from("external_appointments")
         .select("*")
         .eq("business_id", businessId)
@@ -47,7 +47,7 @@ export default function ExternalAppointmentsPage() {
 
       {!loading && appointments.length === 0 && (
         <div className="p-4 bg-gray-100 border rounded">
-          No external appointments found.  
+          No external appointments found.
           Try syncing your CRM from the Calendar Settings page.
         </div>
       )}
