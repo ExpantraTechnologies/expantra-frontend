@@ -4,7 +4,6 @@ import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const preferredRegion = "iad1";
 export const bodyParser = false;
 
 export async function POST(req: NextRequest) {
@@ -35,19 +34,22 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // Handle event
+  // Handle user.created
   if (evt.type === "user.created") {
     const user = evt.data;
 
     const userId = user.id;
     const email = user.email_addresses?.[0]?.email_address;
 
-    if (!userId || !email) {
-      return new Response(JSON.stringify({ error: "Missing user data" }), {
-        status: 400,
+    // If this is a Clerk test event (no email), ignore it but return 200 OK
+    if (!email) {
+      console.log("Ignoring test event: user.created with no email");
+      return new Response(JSON.stringify({ success: true, testEvent: true }), {
+        status: 200,
       });
     }
 
+    // Insert real user into Supabase
     const { data, error } = await supabase
       .from("businesses")
       .insert({
